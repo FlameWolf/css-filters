@@ -12,8 +12,8 @@ function App() {
 				</div>
 			</div>
 			<Alert dismissible="true">This is a simple alert.</Alert>
-			<Modal>
-				<ModalHeader>
+			<Modal show={showModal()}>
+				<ModalHeader onHide={() => setShowModal(value => !value)}>
 					<ModalTitle>This is the modal title</ModalTitle>
 				</ModalHeader>
 				<ModalBody>
