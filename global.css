@@ -1,3 +1,6 @@
+input[type="range"] {
+	width: 100%;
+}
 div.highlighted {
 	color: #ffffff;
 	font-weight: bold;

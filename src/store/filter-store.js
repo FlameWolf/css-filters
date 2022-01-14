@@ -28,14 +28,15 @@ export const [filterStore, setFilterStore] = createStore({
 	},
 	filterDefaultValue: name => {
 		const filter = filterStore.filters.find(filter => filter.name === name);
-		return filter.default ||
+		return filter.default !== undefined ?
+			filter.default :
 			filter.max < filter.min ?
 				filter.min :
 				filter.min + ((filter.max - filter.min) / 2);
 	},
 	filterCurrentValue: name => {
 		const filter = filterStore.filters.find(filter => filter.name === name);
-		return filter.value !== undefined ? filter.value : filterStore.filterDefaultValue(name);
+		return filter.value !== undefined ? +filter.value : filterStore.filterDefaultValue(name);
 	},
 	resetFilterValue: name => {
 		setFilterStore(

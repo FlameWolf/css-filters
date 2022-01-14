@@ -4,15 +4,17 @@ import { filterStore } from "./store/filter-store";
 
 function App() {
 	const filterString = createMemo(() => {
-		return filterStore.filters
+		const filterString = filterStore.filters
 			.reduce((result, filter) => {
 				const filterName = filter.name;
 				const defaultValue = filterStore.filterDefaultValue(filterName);
 				const currentValue = filterStore.filterCurrentValue(filterName);
 				const transform = filter.transform || (x => x);
-				return defaultValue === currentValue ? result : `${result}${filterName}: ${transform(currentValue)}; `;
+				console.log(filterName, defaultValue, currentValue);
+				return defaultValue === currentValue ? result : `${result}${filterName}(${transform(currentValue)}${filter.unit}) `;
 			}, "")
 			.trim();
+		return filterString ? `filter: ${filterString};` : "";
 	});
 
 	return (
@@ -21,9 +23,9 @@ function App() {
 				<h4 class="mb-4 fw-bold">CSS Filter Playground</h4>
 			</div>
 			<div class="row">
-				<div class="col-10">
+				<div class="col">
 					<div class="position-relative">
-						<img class="img-fluid" src="https://i.imgur.com/DVEkl6p.jpg" style={filterString()}/>
+						<img class="img-fluid" src="/src/assets/images/scenery.jpg" style={filterString()}/>
 						<div class="position-absolute top-0 start-0 w-100 mt-4 px-2">
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
