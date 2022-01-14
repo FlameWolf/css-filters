@@ -28,9 +28,10 @@ export const [filterStore, setFilterStore] = createStore({
 	},
 	filterDefaultValue: name => {
 		const filter = filterStore.filters.find(filter => filter.name === name);
-		return filter.default || filter.max < filter.min ?
-			filter.min :
-			(filter.min + (filter.max - filter.min) / 2);
+		return filter.default ||
+			filter.max < filter.min ?
+				filter.min :
+				filter.min + ((filter.max - filter.min) / 2);
 	},
 	filterCurrentValue: name => {
 		const filter = filterStore.filters.find(filter => filter.name === name);
@@ -46,12 +47,8 @@ export const [filterStore, setFilterStore] = createStore({
 		);
 	},
 	resetAllFilterValues: () => {
-		setFilterStore(
-			"filters",
-			{},
-			filter => ({
-				value: undefined
-			})
-		);
+		setFilterStore("filters", {}, filter => ({
+			value: undefined
+		}));
 	}
 });
