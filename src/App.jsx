@@ -1,4 +1,5 @@
 import { createMemo, For } from "solid-js";
+import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
 import { filterStore } from "./store/filter-store";
 
@@ -25,7 +26,7 @@ function App() {
 			<div class="row">
 				<div class="col">
 					<div class="position-relative">
-						<img class="img-fluid" src="/src/assets/images/scenery.jpg" style={filterString()}/>
+						<img class="img-fluid" src={sceneryImageUrl} style={filterString()}/>
 						<div class="position-absolute top-0 start-0 w-100 mt-4 px-2">
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
