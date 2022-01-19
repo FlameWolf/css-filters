@@ -4,8 +4,8 @@ export const [filterStore, setFilterStore] = createStore({
 	filters: [
 		{ name: "brightness", min: 0, max: 200, unit: "%" },
 		{ name: "contrast", min: 0, max: 200, unit: "%" },
-		{ name: "saturate", min: 0, max: 100, unit: "%", text: "Saturation" },
-		{ name: "drop-shadow", min: 0, max: 50, default: 50, unit: "px", transform: input => `0 0 ${input} #000000`, text: "Drop Shadow" },
+		{ name: "saturate", min: 0, max: 200, unit: "%", text: "Saturation" },
+		{ name: "drop-shadow", min: 0, max: 50, default: 0, unit: "px", transform: (input, unit) => `0 0 ${input}${unit} #000000`, text: "Drop Shadow" },
 		{ name: "grayscale", min: 0, max: 100, default: 0, unit: "%", text: "Greyscale" },
 		{ name: "sepia", min: 0, max: 100, default: 0, unit: "%" },
 		{ name: "invert", min: 0, max: 100, default: 0, unit: "%", text: "Inversion" },

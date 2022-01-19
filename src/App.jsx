@@ -10,9 +10,9 @@ function App() {
 				const filterName = filter.name;
 				const defaultValue = filterStore.filterDefaultValue(filterName);
 				const currentValue = filterStore.filterCurrentValue(filterName);
-				const transform = filter.transform || (x => x);
-				console.log(filterName, defaultValue, currentValue);
-				return defaultValue === currentValue ? result : `${result}${filterName}(${transform(currentValue)}${filter.unit}) `;
+				const unit = filter.unit;
+				const transform = filter.transform;
+				return defaultValue === currentValue ? result : `${result}${filterName}(${transform?.(currentValue, unit) || `${currentValue}${unit}`}) `;
 			}, "")
 			.trim();
 		return filterString ? `filter: ${filterString};` : "";
