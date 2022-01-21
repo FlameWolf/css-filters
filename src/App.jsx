@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For, Show } from "solid-js";
+import { createMemo, createSignal, For, onCleanup, Show } from "solid-js";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
 import { trimFileName } from "./library";
@@ -10,10 +10,15 @@ function App() {
 	let imagePicker;
 	let targetImage;
 
+	const disposeImageUrl = () => {
+		URL.revokeObjectURL(targetImage.src);
+	};
+
 	const updateImage = () => {
 		const files = imagePicker.files;
 		if(files.length) {
 			const selectedImage = files[0];
+			disposeImageUrl();
 			targetImage.src = URL.createObjectURL(selectedImage);
 			setDisplayImageText(trimFileName(selectedImage.name));
 		}
@@ -21,6 +26,7 @@ function App() {
 
 	const resetImage = () => {
 		imagePicker.value = "";
+		disposeImageUrl();
 		targetImage.src = sceneryImageUrl;
 		setDisplayImageText(chooseImageText);
 	};
@@ -37,6 +43,10 @@ function App() {
 			}, "")
 			.trim();
 		return filterString ? `filter: ${filterString};` : "";
+	});
+
+	onCleanup(() => {
+		disposeImageUrl();
 	});
 
 	return (
