@@ -7,6 +7,7 @@ import { filterStore } from "./store/filter-store";
 function App() {
 	const chooseImageText = "Choose Image";
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
+	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
 	let imagePicker;
 	let targetImage;
 
@@ -19,7 +20,7 @@ function App() {
 		if(files.length) {
 			const selectedImage = files[0];
 			disposeImageUrl();
-			targetImage.src = URL.createObjectURL(selectedImage);
+			setImageUrl(URL.createObjectURL(selectedImage));
 			setDisplayImageText(trimFileName(selectedImage.name));
 		}
 	};
@@ -27,7 +28,7 @@ function App() {
 	const resetImage = () => {
 		imagePicker.value = "";
 		disposeImageUrl();
-		targetImage.src = sceneryImageUrl;
+		setImageUrl(sceneryImageUrl);
 		setDisplayImageText(chooseImageText);
 	};
 
@@ -57,7 +58,7 @@ function App() {
 			<div class="row">
 				<div class="col">
 					<div class="position-relative">
-						<img ref={targetImage} class="w-100" src={sceneryImageUrl} onError={resetImage} style={filterString()}/>
+						<img ref={targetImage} class="w-100" src={imageUrl()} onError={resetImage} style={filterString()}/>
 						<div class="position-absolute top-0 start-0 w-100 mt-4 px-2">
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
