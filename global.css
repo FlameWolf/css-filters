@@ -1,9 +1,14 @@
 input[type="range"] {
 	width: 100%;
 }
+
 div.highlighted {
 	color: #ffffff;
 	font-weight: bold;
 	text-shadow: 0 0 4px #000000;
 	filter: drop-shadow(0 0 4px #000000);
+}
+
+.copy-badge {
+	opacity: 0;
 }

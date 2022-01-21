@@ -11,6 +11,7 @@ function App() {
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
 	let imagePicker;
 	let targetImage;
+	let copyBadge;
 
 	const disposeUrl = url => {
 		URL.revokeObjectURL(url);
@@ -61,6 +62,14 @@ function App() {
 		});
 	};
 
+	const copyFilterStyle = () => {
+		navigator.clipboard.writeText(filterStyle());
+		copyBadge.style.opacity = 1;
+		setTimeout(() => {
+			copyBadge.style.opacity = 0;
+		}, 1500);
+	};
+
 	const filterString = createMemo(() => {
 		return filterStore.filters
 			.reduce((result, filter) => {
@@ -76,7 +85,7 @@ function App() {
 
 	const filterStyle = () => {
 		const filter = filterString();
-		return filter ? `filter: ${filter}` : "";
+		return filter ? `filter: ${filter};` : "";
 	};
 
 	onCleanup(() => {
@@ -113,7 +122,15 @@ function App() {
 									</button>
 								</div>
 							</div>
-							<textarea class="form-control" value={filterStyle()}></textarea>
+							<div class="position-relative">
+								<div class="position-absolute top-0 end-0 mt-1 me-1">
+									<span ref={copyBadge} class="badge bg-secondary me-2 copy-badge fade show">Filter copied to clipboard</span>
+									<button class="btn btn-outline-secondary btn-sm" classList={{ "d-none": filterStyle() === "" }} onClick={copyFilterStyle}>
+										<i class="bi bi-clipboard"></i>
+									</button>
+								</div>
+								<textarea class="form-control bg-white text-black" readOnly={true} value={filterStyle()}></textarea>
+							</div>
 						</div>
 					</div>
 				</div>
