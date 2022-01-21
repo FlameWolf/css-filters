@@ -2,7 +2,7 @@ import { filterStore } from "../store/filter-store";
 
 export default props => {
 	return (
-		<div class="my-1">
+		<div class="my-1 col-sm-6 col-md-4 col-lg-12">
 			<div class="d-flex">
 				<label htmlFor={props.name}>{filterStore.filterDisplayText(props.name)}</label>
 				<span class="ms-auto">{filterStore.filterCurrentValue(props.name)}{props.unit}</span>
