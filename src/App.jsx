@@ -20,6 +20,7 @@ function App() {
 	};
 
 	const resetImage = () => {
+		imagePicker.value = "";
 		targetImage.src = sceneryImageUrl;
 		setDisplayImageText(chooseImageText);
 	};
@@ -46,7 +47,7 @@ function App() {
 			<div class="row">
 				<div class="col">
 					<div class="position-relative">
-						<img ref={targetImage} class="w-100" src={sceneryImageUrl} style={filterString()}/>
+						<img ref={targetImage} class="w-100" src={sceneryImageUrl} onError={resetImage} style={filterString()}/>
 						<div class="position-absolute top-0 start-0 w-100 mt-4 px-2">
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
