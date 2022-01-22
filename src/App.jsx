@@ -148,7 +148,7 @@ function App() {
 								</Show>
 							</div>
 							<div class="position-relative">
-								<div class="position-absolute top-0 start-0 w-50">
+								<div class="position-absolute top-0 start-0">
 									<span class="badge bg-dark">{filterStyle()}</span>
 								</div>
 								<div class="position-absolute top-0 end-0">
