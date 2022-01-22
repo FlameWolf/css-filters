@@ -5,7 +5,7 @@ import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
 
 function App() {
-	const chooseImageText = "Choose Image";
+	const chooseImageText = `<i class="bi bi-folder2-open"></i>`;
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal("scenery");
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
@@ -129,14 +129,14 @@ function App() {
 								<div class="highlighted">CSS:</div>
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
 								<div class="btn-group border border-white rounded ms-auto">
-									<button class="btn btn-primary" onClick={() => imagePicker.click()}>{displayImageText()}</button>
+									<button class="btn btn-primary" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
 									<Show when={displayImageText() !== chooseImageText}>
 										<button class="btn btn-danger" onClick={resetImage}>
 											<i class="bi bi-x-lg"></i>
 										</button>
 									</Show>
 								</div>
-								<div class="btn-group bg-secondary ms-2">
+								<div class="btn-group bg-secondary ms-2" classList={{ "d-none": filterStyle() === "" }}>
 									<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
 										<i class="bi bi-arrow-repeat"></i>
 									</button>
