@@ -124,7 +124,7 @@ function App() {
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
 					<div class="position-relative">
 						<img ref={targetImage} class="w-100" src={imageUrl()} style={filterStyle()}/>
-						<div class="position-absolute top-0 start-0 w-100 mt-4 px-2">
+						<div class="position-absolute top-0 start-0 w-100 mt-2 px-2">
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
