@@ -9,6 +9,12 @@ div.highlighted {
 	filter: drop-shadow(0 0 4px #000000);
 }
 
+.filter-badge {
+	text-align: unset;
+	line-height: unset;
+	white-space: unset;
+}
+
 .copy-badge {
 	opacity: 0;
 }

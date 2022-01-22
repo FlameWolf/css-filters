@@ -128,15 +128,15 @@ function App() {
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
-								<div class="btn-group border border-white rounded ms-auto">
-									<button class="btn btn-primary" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
+								<div class="btn-group rounded ms-auto">
+									<button class="btn btn-primary btn-outline-light" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
 									<Show when={displayImageText() !== chooseImageText}>
-										<button class="btn btn-danger" onClick={resetImage}>
+										<button class="btn btn-danger btn-outline-light" onClick={resetImage}>
 											<i class="bi bi-x-lg"></i>
 										</button>
 									</Show>
 								</div>
-								<Show when={filterStyle()}>
+								<Show when={filterString()}>
 									<div class="btn-group bg-secondary rounded ms-2">
 										<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
 											<i class="bi bi-arrow-repeat"></i>
@@ -148,15 +148,17 @@ function App() {
 								</Show>
 							</div>
 							<div class="position-relative">
-								<div class="position-absolute top-0 end-0 mt-1 me-1">
-									<span ref={copyBadge} class="badge bg-secondary me-2 copy-badge fade show">Filter copied to clipboard</span>
-									<Show when={filterStyle()}>
-										<button class="btn btn-outline-secondary btn-sm" onClick={copyFilterStyle}>
+								<div class="position-absolute top-0 start-0 w-50">
+									<span class="badge bg-dark filter-badge">{filterStyle()}</span>
+								</div>
+								<div class="position-absolute top-0 end-0">
+									<span ref={copyBadge} class="badge bg-dark me-2 copy-badge fade show">Filter copied to clipboard</span>
+									<Show when={filterString()}>
+										<button class="btn btn-primary btn-outline-light" onClick={copyFilterStyle}>
 											<i class="bi bi-clipboard"></i>
 										</button>
 									</Show>
 								</div>
-								<textarea class="form-control bg-white text-black" readOnly={true} value={filterStyle()}></textarea>
 							</div>
 						</div>
 					</div>
