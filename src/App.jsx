@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For, onCleanup, Show } from "solid-js";
+import { createMemo, createSignal, onCleanup, For, Show } from "solid-js";
 import { trimFileName } from "./library";
 import { filterStore } from "./store/filter-store";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
@@ -136,21 +136,25 @@ function App() {
 										</button>
 									</Show>
 								</div>
-								<div class="btn-group bg-secondary ms-2" classList={{ "d-none": filterStyle() === "" }}>
-									<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
-										<i class="bi bi-arrow-repeat"></i>
-									</button>
-									<button class="btn btn-outline-light" onClick={downloadImage}>
-										<i class="bi bi-download"></i>
-									</button>
-								</div>
+								<Show when={filterStyle()}>
+									<div class="btn-group bg-secondary ms-2">
+										<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
+											<i class="bi bi-arrow-repeat"></i>
+										</button>
+										<button class="btn btn-outline-light" onClick={downloadImage}>
+											<i class="bi bi-download"></i>
+										</button>
+									</div>
+								</Show>
 							</div>
 							<div class="position-relative">
 								<div class="position-absolute top-0 end-0 mt-1 me-1">
 									<span ref={copyBadge} class="badge bg-secondary me-2 copy-badge fade show">Filter copied to clipboard</span>
-									<button class="btn btn-outline-secondary btn-sm" classList={{ "d-none": filterStyle() === "" }} onClick={copyFilterStyle}>
-										<i class="bi bi-clipboard"></i>
-									</button>
+									<Show when={filterStyle()}>
+										<button class="btn btn-outline-secondary btn-sm" onClick={copyFilterStyle}>
+											<i class="bi bi-clipboard"></i>
+										</button>
+									</Show>
 								</div>
 								<textarea class="form-control bg-white text-black" readOnly={true} value={filterStyle()}></textarea>
 							</div>
