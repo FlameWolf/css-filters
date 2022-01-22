@@ -149,7 +149,7 @@ function App() {
 							</div>
 							<div class="position-relative">
 								<div class="position-absolute top-0 start-0 w-50">
-									<span class="badge bg-dark filter-badge">{filterStyle()}</span>
+									<span class="badge bg-dark">{filterStyle()}</span>
 								</div>
 								<div class="position-absolute top-0 end-0">
 									<span ref={copyBadge} class="badge bg-dark me-2 copy-badge fade show">Filter copied to clipboard</span>
