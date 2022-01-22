@@ -18,16 +18,28 @@ function App() {
 	};
 
 	const updateImage = () => {
-		const files = imagePicker.files;
+		let files = imagePicker.files;
 		if (files.length) {
-			const selectedImage = files[0];
+			let selectedImage = files[0];
 			const imageFileName = selectedImage.name;
-			console.log(selectedImage);
-			disposeUrl(imageUrl());
-			setImageUrl(URL.createObjectURL(selectedImage));
-			setFileName(imageFileName.indexOf(".") < 0 ? imageFileName : imageFileName.match(/(.*)+\./)[1]);
-			setDisplayImageText(trimFileName(imageFileName));
+			let tempImage = new Image();
+			let tempSource = URL.createObjectURL(selectedImage);
+			tempImage.src = tempSource;
+			tempImage.addEventListener("load", event => {
+				disposeUrl(imageUrl());
+				setImageUrl(tempSource);
+				setFileName(imageFileName.indexOf(".") < 0 ? imageFileName : imageFileName.match(/(.*)+\./)[1]);
+				setDisplayImageText(trimFileName(imageFileName));
+				tempSource = null;
+				tempImage = null;
+			});
+			tempImage.addEventListener("error", event => {
+				disposeUrl(tempSource);
+				tempImage = null;
+			});
+			selectedImage = null;
 		}
+		files = null;
 	};
 
 	const resetImage = () => {
@@ -38,13 +50,13 @@ function App() {
 	};
 
 	const downloadImage = () => {
-		const outputImage = new Image();
+		let outputImage = new Image();
 		outputImage.src = imageUrl();
 		outputImage.addEventListener("load", event => {
-			const outputCanvas = document.createElement("canvas");
-			const outputContext = outputCanvas.getContext("2d");
-			const downloadLink = document.createElement("a");
-			const downloadLinkStyle = downloadLink.style;
+			let outputCanvas = document.createElement("canvas");
+			let outputContext = outputCanvas.getContext("2d");
+			let downloadLink = document.createElement("a");
+			let downloadLinkStyle = downloadLink.style;
 			outputCanvas.width = outputImage.naturalWidth;
 			outputCanvas.height = outputImage.naturalHeight;
 			outputContext.filter = filterString();
@@ -58,7 +70,15 @@ function App() {
 			downloadLink.click();
 			setTimeout(function () {
 				document.body.removeChild(downloadLink);
+				downloadLinkStyle = null;
+				downloadLink = null;
 			});
+			outputContext = null;
+			outputCanvas = null;
+			outputImage = null;
+		});
+		outputImage.addEventListener("error", event => {
+			outputImage = null;
 		});
 	};
 
@@ -90,6 +110,9 @@ function App() {
 
 	onCleanup(() => {
 		disposeUrl(imageUrl());
+		copyBadge = null;
+		targetImage = null;
+		imagePicker = null;
 	});
 
 	return (
@@ -100,7 +123,7 @@ function App() {
 			<div class="row">
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
 					<div class="position-relative">
-						<img ref={targetImage} class="w-100" src={imageUrl()} onError={resetImage} style={filterStyle()}/>
+						<img ref={targetImage} class="w-100" src={imageUrl()} style={filterStyle()}/>
 						<div class="position-absolute top-0 start-0 w-100 mt-4 px-2">
 							<div class="d-flex align-items-center mb-2">
 								<div class="highlighted">CSS:</div>
