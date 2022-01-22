@@ -137,7 +137,7 @@ function App() {
 									</Show>
 								</div>
 								<Show when={filterStyle()}>
-									<div class="btn-group bg-secondary ms-2">
+									<div class="btn-group bg-secondary rounded ms-2">
 										<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
 											<i class="bi bi-arrow-repeat"></i>
 										</button>
