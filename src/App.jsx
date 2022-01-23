@@ -85,8 +85,9 @@ function App() {
 	const copyFilterStyle = () => {
 		navigator.clipboard.writeText(filterStyle());
 		copyBadge.style.opacity = 1;
+		copyBadge.style.zIndex = "unset";
 		setTimeout(() => {
-			copyBadge.style.opacity = 0;
+			copyBadge.removeAttribute("style");
 		}, 1500);
 	};
 
@@ -124,11 +125,10 @@ function App() {
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
 					<div class="position-relative">
 						<img ref={targetImage} class="w-100" src={imageUrl()} style={filterStyle()}/>
-						<div class="position-absolute top-0 start-0 w-100 mt-2 px-2">
-							<div class="d-flex align-items-center mb-2">
-								<div class="highlighted">CSS:</div>
+						<div class="position-absolute top-0 start-0 w-100">
+							<div class="d-flex align-items-center my-2 px-2">
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
-								<div class="btn-group rounded ms-auto">
+								<div class="btn-group rounded">
 									<button class="btn btn-primary btn-outline-light" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
 									<Show when={displayImageText() !== chooseImageText}>
 										<button class="btn btn-danger btn-outline-light" onClick={resetImage}>
@@ -137,7 +137,7 @@ function App() {
 									</Show>
 								</div>
 								<Show when={filterString()}>
-									<div class="btn-group bg-secondary rounded ms-2">
+									<div class="btn-group bg-secondary rounded mx-1">
 										<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
 											<i class="bi bi-arrow-repeat"></i>
 										</button>
@@ -145,20 +145,16 @@ function App() {
 											<i class="bi bi-download"></i>
 										</button>
 									</div>
-								</Show>
-							</div>
-							<div class="position-relative">
-								<div class="position-absolute top-0 start-0">
-									<span class="badge bg-dark">{filterStyle()}</span>
-								</div>
-								<div class="position-absolute top-0 end-0">
-									<span ref={copyBadge} class="badge bg-dark me-2 copy-badge fade show">Filter copied to clipboard</span>
-									<Show when={filterString()}>
+									<div class="position-relative ms-auto">
+										<span ref={copyBadge} class="position-absolute top-0 end-0 badge bg-dark copy-badge fade show">Filter copied to clipboard</span>
 										<button class="btn btn-primary btn-outline-light" onClick={copyFilterStyle}>
 											<i class="bi bi-clipboard"></i>
 										</button>
-									</Show>
-								</div>
+									</div>
+								</Show>
+							</div>
+							<div class="d-flex justify-content-end px-2">
+								<span class="badge bg-dark filter-badge">{filterStyle()}</span>
 							</div>
 						</div>
 					</div>

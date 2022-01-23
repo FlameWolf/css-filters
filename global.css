@@ -11,4 +11,10 @@ div.highlighted {
 
 .copy-badge {
 	opacity: 0;
+	z-index: -1;
+}
+
+.filter-badge {
+	text-align: unset;
+	white-space: unset;
 }
