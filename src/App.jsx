@@ -6,8 +6,9 @@ import RangeSlider from "./components/RangeSlider";
 
 function App() {
 	const chooseImageText = `<i class="bi bi-folder2-open"></i>`;
+	const sceneryFileName = "scenery";
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
-	const [fileName, setFileName] = createSignal("scenery");
+	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
 	let imagePicker;
 	let targetImage;
@@ -46,6 +47,7 @@ function App() {
 		imagePicker.value = "";
 		disposeUrl(imageUrl());
 		setImageUrl(sceneryImageUrl);
+		setFileName(sceneryFileName);
 		setDisplayImageText(chooseImageText);
 	};
 
