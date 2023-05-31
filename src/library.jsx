@@ -29,7 +29,7 @@ export const trimFileName = function (fileName) {
 			isPressed = true;
 			pressTimer = setInterval(() => {
 				event.target.dispatchEvent(pressedEvent);
-			});
+			}, 100);
 		}
 	};
 	const released = event => {
