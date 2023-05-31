@@ -29,7 +29,7 @@ export const trimFileName = function (fileName) {
 			isPressed = true;
 			pressTimer = setInterval(() => {
 				event.target.dispatchEvent(pressedEvent);
-			}, 100);
+			});
 		}
 	};
 	const released = event => {
@@ -38,7 +38,5 @@ export const trimFileName = function (fileName) {
 		event.target.dispatchEvent(releasedEvent);
 	};
 	globalThis.addEventListener("mousedown", pressed);
-	globalThis.addEventListener("touchstart", pressed);
 	globalThis.addEventListener("mouseup", released);
-	globalThis.addEventListener("touchend", released);
 })();
