@@ -5,7 +5,7 @@ import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
 
 function App() {
-	const chooseImageText = `<i class="bi bi-folder2-open"></i>`;
+	const chooseImageText = `<i class="bi bi-upload"></i>`;
 	const sceneryFileName = "scenery";
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
