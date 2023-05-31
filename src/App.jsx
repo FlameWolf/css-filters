@@ -10,6 +10,7 @@ function App() {
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
+	const [showFilterBadge, setShowFilterBadge] = createSignal(true);
 	let imagePicker;
 	let targetImage;
 	let copyBadge;
@@ -148,16 +149,23 @@ function App() {
 										</button>
 									</div>
 									<div class="position-relative ms-auto">
-										<span ref={copyBadge} class="position-absolute top-0 end-0 badge bg-dark copy-badge fade show">Filter copied to clipboard</span>
-										<button class="btn btn-sm btn-primary btn-outline-light" onClick={copyFilterStyle}>
-											<i class="bi bi-clipboard"></i>
-										</button>
+										<span ref={copyBadge} class="position-absolute top-0 end-100 badge bg-dark copy-badge fade show me-1">Filter copied to clipboard</span>
+										<div class="btn-group btn-group-sm rounded">
+											<button class="btn btn-light" data-bs-toggle="button" onClick={() => setShowFilterBadge(!showFilterBadge())}>
+												{() => showFilterBadge() ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+											</button>
+											<button class="btn btn-primary btn-outline-light" onClick={copyFilterStyle}>
+												<i class="bi bi-clipboard"></i>
+											</button>
+										</div>
 									</div>
 								</Show>
 							</div>
-							<div class="d-flex justify-content-end px-2">
-								<span class="badge bg-dark filter-badge">{filterStyle()}</span>
-							</div>
+							<Show when={showFilterBadge()}>
+								<div class="d-flex justify-content-end px-2">
+									<span class="badge bg-dark filter-badge">{filterStyle()}</span>
+								</div>
+							</Show>
 						</div>
 					</div>
 				</div>
