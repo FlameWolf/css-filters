@@ -130,7 +130,7 @@ function App() {
 						<div class="position-absolute top-0 start-0 w-100">
 							<div class="d-flex align-items-center my-2 px-2">
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
-								<div class="btn-group rounded">
+								<div class="btn-group btn-group-sm rounded">
 									<button class="btn btn-primary btn-outline-light" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
 									<Show when={displayImageText() !== chooseImageText}>
 										<button class="btn btn-danger btn-outline-light" onClick={resetImage}>
@@ -139,7 +139,7 @@ function App() {
 									</Show>
 								</div>
 								<Show when={filterString()}>
-									<div class="btn-group bg-secondary rounded mx-1">
+									<div class="btn-group btn-group-sm bg-secondary rounded mx-1">
 										<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
 											<i class="bi bi-arrow-repeat"></i>
 										</button>
@@ -149,7 +149,7 @@ function App() {
 									</div>
 									<div class="position-relative ms-auto">
 										<span ref={copyBadge} class="position-absolute top-0 end-0 badge bg-dark copy-badge fade show">Filter copied to clipboard</span>
-										<button class="btn btn-primary btn-outline-light" onClick={copyFilterStyle}>
+										<button class="btn btn-sm btn-primary btn-outline-light" onClick={copyFilterStyle}>
 											<i class="bi bi-clipboard"></i>
 										</button>
 									</div>
