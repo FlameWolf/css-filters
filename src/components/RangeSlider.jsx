@@ -20,11 +20,11 @@ export default props => {
 				<span class="ms-auto">{filterStore.filterCurrentValue(props.name)}{props.unit}</span>
 			</div>
 			<div class="d-flex align-items-center">
-				<button class="btn btn-lg p-0" onPress={decrementFilterValue} onClick={decrementFilterValue}>
+				<button class="btn btn-lg p-0 border-0" classList={{ disabled: filterStore.filterCurrentValue(props.name) === props.min }} onPress={decrementFilterValue} onClick={decrementFilterValue}>
 					<i class="bi bi-dash-circle"></i>
 				</button>
 				<input ref={rangeInput} id={props.name} class="form-range px-1" type="range" min={props.min} max={props.max} value={filterStore.filterCurrentValue(props.name)} onInput={() => updateFilterValue(parseFloat(rangeInput.value))}/>
-				<button class="btn btn-lg p-0" onPress={incrementFilterValue} onClick={incrementFilterValue}>
+				<button class="btn btn-lg p-0 border-0" classList={{ disabled: filterStore.filterCurrentValue(props.name) === props.max }} onPress={incrementFilterValue} onClick={incrementFilterValue}>
 					<i class="bi bi-plus-circle"></i>
 				</button>
 				<button class="btn btn-sm btn-secondary ms-2" onClick={() => filterStore.resetFilterValue(props.name)}>Reset</button>
