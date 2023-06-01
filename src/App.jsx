@@ -1,4 +1,4 @@
-import { createMemo, createSignal, onCleanup, For, Show } from "solid-js";
+import { createMemo, createSignal, onCleanup, For, Show, createEffect } from "solid-js";
 import { trimFileName } from "./library";
 import { filterStore } from "./store/filter-store";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
@@ -11,6 +11,7 @@ function App() {
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
 	const [showFilterBadge, setShowFilterBadge] = createSignal(true);
+	const [applyFilter, setApplyFilter] = createSignal(true);
 	let imagePicker;
 	let targetImage;
 	let copyBadge;
@@ -107,6 +108,13 @@ function App() {
 			.trim();
 	});
 
+	createEffect(previousFilter => {
+		if(filterString() !== previousFilter) {
+			setApplyFilter(true);
+		}
+		return filterString;
+	});
+
 	const filterStyle = () => {
 		const filter = filterString();
 		return filter ? `filter: ${filter};` : "";
@@ -127,37 +135,40 @@ function App() {
 			<div class="row">
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
 					<div class="position-relative">
-						<img ref={targetImage} class="w-100" src={imageUrl()} style={filterStyle()}/>
+						<img ref={targetImage} class="w-100" src={imageUrl()} style={applyFilter() ? filterStyle() : ""}/>
 						<div class="position-absolute top-0 start-0 w-100">
 							<div class="d-flex align-items-center my-2 px-2">
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
-								<div class="btn-group btn-group-sm rounded">
-									<button class="btn btn-primary btn-outline-light" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
+								<div class="btn-group btn-group-sm">
+									<button class="btn btn-primary btn-outline-light" title="Open" innerHTML={displayImageText()} onClick={() => imagePicker.click()}></button>
 									<Show when={displayImageText() !== chooseImageText}>
-										<button class="btn btn-danger btn-outline-light" onClick={resetImage}>
+										<button class="btn btn-danger btn-outline-light" title="Close" onClick={resetImage}>
 											<i class="bi bi-x-lg"></i>
 										</button>
 									</Show>
 								</div>
 								<Show when={filterString()}>
-									<div class="btn-group btn-group-sm bg-secondary rounded mx-1">
-										<button class="btn btn-outline-light" onClick={filterStore.resetAllFilterValues}>
+									<div class="btn-group btn-group-sm ms-1">
+										<button class="btn btn-primary btn-outline-light" title="Reset" onClick={filterStore.resetAllFilterValues}>
 											<i class="bi bi-arrow-repeat"></i>
 										</button>
-										<button class="btn btn-outline-light" onClick={downloadImage}>
+										<button class="btn btn-primary btn-outline-light" title="Save" onClick={downloadImage}>
 											<i class="bi bi-download"></i>
 										</button>
 									</div>
 									<div class="position-relative ms-auto">
 										<span ref={copyBadge} class="position-absolute top-0 end-100 badge bg-dark copy-badge fade show me-1">Filter copied to clipboard</span>
-										<div class="btn-group btn-group-sm rounded">
-											<button class="btn btn-light" data-bs-toggle="button" onClick={() => setShowFilterBadge(!showFilterBadge())}>
-												{() => showFilterBadge() ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
+										<div class="btn-group btn-group-sm me-1">
+											<button class="btn btn-primary btn-outline-light" classList={{ active: !showFilterBadge() }} title="Toggle filter badge" onClick={() => setShowFilterBadge(!showFilterBadge())}>
+												{() => showFilterBadge() ? <i class="bi bi-code"></i> : <i class="bi bi-code-slash"></i>}
 											</button>
-											<button class="btn btn-primary btn-outline-light" onClick={copyFilterStyle}>
-												<i class="bi bi-clipboard"></i>
+											<button class="btn btn-primary btn-outline-light" classList={{ active: !applyFilter() }} title="Toggle filter" onClick={() => setApplyFilter(!applyFilter())}>
+												{() => applyFilter() ? <i class="bi bi-eye"></i> : <i class="bi bi-eye-slash"></i>}
 											</button>
 										</div>
+										<button class="btn btn-primary btn-sm btn-outline-light" title="Copy" onClick={copyFilterStyle}>
+											<i class="bi bi-clipboard"></i>
+										</button>
 									</div>
 								</Show>
 							</div>
