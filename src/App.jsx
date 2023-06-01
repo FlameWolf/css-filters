@@ -159,7 +159,7 @@ function App() {
 									<div class="position-relative ms-auto">
 										<span ref={copyBadge} class="position-absolute top-0 end-100 badge bg-dark copy-badge fade show me-1">Filter copied to clipboard</span>
 										<div class="btn-group btn-group-sm me-1">
-											<button class="btn btn-primary btn-outline-light" classList={{ active: !showFilterBadge() }} title="Toggle filter badge" onClick={() => setShowFilterBadge(!showFilterBadge())}>
+											<button class="btn btn-primary btn-outline-light" classList={{ active: !showFilterBadge() }} title="Toggle CSS" onClick={() => setShowFilterBadge(!showFilterBadge())}>
 												{() => showFilterBadge() ? <i class="bi bi-code"></i> : <i class="bi bi-code-slash"></i>}
 											</button>
 											<button class="btn btn-primary btn-outline-light" classList={{ active: !applyFilter() }} title="Toggle filter" onClick={() => setApplyFilter(!applyFilter())}>
