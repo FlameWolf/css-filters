@@ -27,7 +27,9 @@ export default props => {
 				<button class="btn btn-lg p-0 border-0" classList={{ disabled: filterStore.filterCurrentValue(props.name) === props.max }} onPress={incrementFilterValue} onClick={incrementFilterValue}>
 					<i class="bi bi-plus-circle"></i>
 				</button>
-				<button class="btn btn-sm btn-secondary ms-2" onClick={() => filterStore.resetFilterValue(props.name)}>Reset</button>
+				<button class="btn btn-lg p-0 border-0 ms-2" classList={{ disabled: filterStore.filterCurrentValue(props.name) === filterStore.filterDefaultValue(props.name) }} onClick={() => filterStore.resetFilterValue(props.name)}>
+					<i class="bi bi-x-circle-fill"></i>
+				</button>
 			</div>
 		</div>
 	);

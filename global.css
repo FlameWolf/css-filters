@@ -6,6 +6,12 @@ input[type="range"] {
 	width: 100%;
 }
 
+.btn.border-0:focus {
+	outline: 1px solid var(--bs-primary-border-subtle);
+	border-radius: var(--bs-border-radius-sm);
+	outline-offset: 2px;
+}
+
 div.highlighted {
 	color: #ffffff;
 	font-weight: bold;
