@@ -1,5 +1,5 @@
 import { createMemo, createSignal, onCleanup, For, Show, createEffect } from "solid-js";
-import { trimFileName } from "./library";
+import { trimFileName, Cookie } from "./library";
 import { filterStore } from "./store/filter-store";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
@@ -7,6 +7,7 @@ import RangeSlider from "./components/RangeSlider";
 function App() {
 	const chooseImageText = `<i class="bi bi-upload"></i>`;
 	const sceneryFileName = "scenery";
+	const [darkThemeEnabled, setDarkTheme] = createSignal(Boolean(Cookie.get("theme")));
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
@@ -116,6 +117,11 @@ function App() {
 		return filterString;
 	});
 
+	createEffect(() => {
+		document.body.parentElement.setAttribute("data-bs-theme", darkThemeEnabled() ? "dark" : "light");
+		Cookie.set("theme", darkThemeEnabled() || "", { "max-age": Cookie.MAX_AGE_SECONDS });
+	});
+
 	const filterStyle = () => {
 		const filter = filterString();
 		return filter ? `filter: ${filter};` : "";
@@ -131,7 +137,17 @@ function App() {
 	return (
 		<>
 			<div class="row">
-				<h4 class="mb-4 fw-bold">CSS Filter Playground</h4>
+				<h4 class="d-inline-block mb-4 fw-bold w-auto">CSS Filter Playground</h4>
+				<div class="d-inline-block btn-group btn-group-sm w-auto ms-auto" onInput={() => setDarkTheme(!darkThemeEnabled())}>
+					<input id="theme-light" type="radio" class="btn-check" name="theme" checked={!darkThemeEnabled()}/>
+					<label class="btn" for="theme-light" title="Light theme" classList={{ "btn-outline-light": darkThemeEnabled(), "btn-outline-dark": !darkThemeEnabled() }}>
+						<i class="bi bi-sun-fill"></i>
+					</label>
+					<input id="theme-dark" type="radio" class="btn-check" name="theme" checked={darkThemeEnabled()}/>
+					<label class="btn" for="theme-dark" title="Dark theme" classList={{ "btn-outline-light": darkThemeEnabled(), "btn-outline-dark": !darkThemeEnabled() }}>
+						<i class="bi bi-moon-fill"></i>
+					</label>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
