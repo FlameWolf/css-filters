@@ -7,7 +7,7 @@ import RangeSlider from "./components/RangeSlider";
 function App() {
 	const chooseImageText = `<i class="bi bi-upload"></i>`;
 	const sceneryFileName = "scenery";
-	const [darkThemeEnabled, setDarkTheme] = createSignal(Boolean(localStorage.getItem("theme")));
+	const [theme, setTheme] = createSignal(localStorage.getItem("theme"));
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
@@ -96,6 +96,10 @@ function App() {
 		}, 1500);
 	};
 
+	const updateTheme = () => setTheme(document.forms["theme-toggle"].elements["theme"].value);
+
+	const isDark = createMemo(() => theme() === "dark");
+
 	const filterString = createMemo(() => {
 		return filterStore.filters
 			.filter(filter => filter.enable)
@@ -111,15 +115,16 @@ function App() {
 	});
 
 	createEffect(previousFilter => {
-		if(filterString() !== previousFilter) {
+		const currentFilter = filterString();
+		if(currentFilter !== previousFilter) {
 			setApplyFilter(true);
 		}
-		return filterString;
+		return currentFilter;
 	});
 
 	createEffect(() => {
-		document.body.parentElement.setAttribute("data-bs-theme", darkThemeEnabled() ? "dark" : "light");
-		localStorage.setItem("theme", darkThemeEnabled() || "");
+		document.body.parentElement.setAttribute("data-bs-theme", isDark() ? "dark" : "light");
+		localStorage.setItem("theme", theme());
 	});
 
 	const filterStyle = () => {
@@ -138,16 +143,16 @@ function App() {
 		<>
 			<div class="row">
 				<h4 class="d-inline-block mb-4 fw-bold w-auto">CSS Filter Playground</h4>
-				<div class="d-inline-block btn-group btn-group-sm w-auto ms-auto" onInput={() => setDarkTheme(!darkThemeEnabled())}>
-					<input id="theme-light" type="radio" class="btn-check" name="theme" checked={!darkThemeEnabled()}/>
+				<form class="d-inline-block btn-group btn-group-sm w-auto ms-auto" name="theme-toggle" onInput={updateTheme}>
+					<input id="theme-light" type="radio" class="btn-check" name="theme" value="light" checked={!isDark()}/>
 					<label class="btn btn-outline-secondary" for="theme-light" title="Light theme">
-						<i class="bi" classList={{ "bi-sun-fill": !darkThemeEnabled(), "bi-sun": darkThemeEnabled() }}></i>
+						<i class="bi" classList={{ "bi-sun-fill": !isDark(), "bi-sun": isDark() }}></i>
 					</label>
-					<input id="theme-dark" type="radio" class="btn-check" name="theme" checked={darkThemeEnabled()}/>
+					<input id="theme-dark" type="radio" class="btn-check" name="theme" value="dark" checked={isDark()}/>
 					<label class="btn btn-outline-secondary" for="theme-dark" title="Dark theme">
-						<i class="bi" classList={{ "bi-moon-fill": darkThemeEnabled(), "bi-moon": !darkThemeEnabled() }}></i>
+						<i class="bi" classList={{ "bi-moon-fill": isDark(), "bi-moon": !isDark() }}></i>
 					</label>
-				</div>
+				</form>
 			</div>
 			<div class="row">
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
