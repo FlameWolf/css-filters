@@ -140,12 +140,12 @@ function App() {
 				<h4 class="d-inline-block mb-4 fw-bold w-auto">CSS Filter Playground</h4>
 				<div class="d-inline-block btn-group btn-group-sm w-auto ms-auto" onInput={() => setDarkTheme(!darkThemeEnabled())}>
 					<input id="theme-light" type="radio" class="btn-check" name="theme" checked={!darkThemeEnabled()}/>
-					<label class="btn" for="theme-light" title="Light theme" classList={{ "btn-outline-light": darkThemeEnabled(), "btn-outline-dark": !darkThemeEnabled() }}>
-						<i class="bi bi-sun-fill"></i>
+					<label class="btn btn-outline-secondary" for="theme-light" title="Light theme">
+						<i class="bi" classList={{ "bi-sun-fill": !darkThemeEnabled(), "bi-sun": darkThemeEnabled() }}></i>
 					</label>
 					<input id="theme-dark" type="radio" class="btn-check" name="theme" checked={darkThemeEnabled()}/>
-					<label class="btn" for="theme-dark" title="Dark theme" classList={{ "btn-outline-light": darkThemeEnabled(), "btn-outline-dark": !darkThemeEnabled() }}>
-						<i class="bi bi-moon-fill"></i>
+					<label class="btn btn-outline-secondary" for="theme-dark" title="Dark theme">
+						<i class="bi" classList={{ "bi-moon-fill": darkThemeEnabled(), "bi-moon": !darkThemeEnabled() }}></i>
 					</label>
 				</div>
 			</div>
