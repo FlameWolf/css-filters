@@ -1,5 +1,5 @@
 import { createMemo, createSignal, onCleanup, For, Show, createEffect } from "solid-js";
-import { trimFileName, Cookie } from "./library";
+import { trimFileName } from "./library";
 import { filterStore } from "./store/filter-store";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
@@ -7,7 +7,7 @@ import RangeSlider from "./components/RangeSlider";
 function App() {
 	const chooseImageText = `<i class="bi bi-upload"></i>`;
 	const sceneryFileName = "scenery";
-	const [darkThemeEnabled, setDarkTheme] = createSignal(Boolean(Cookie.get("theme")));
+	const [darkThemeEnabled, setDarkTheme] = createSignal(Boolean(localStorage.getItem("theme")));
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
@@ -119,7 +119,7 @@ function App() {
 
 	createEffect(() => {
 		document.body.parentElement.setAttribute("data-bs-theme", darkThemeEnabled() ? "dark" : "light");
-		Cookie.set("theme", darkThemeEnabled() || "", { "max-age": Cookie.MAX_AGE_SECONDS });
+		localStorage.setItem("theme", darkThemeEnabled() || "");
 	});
 
 	const filterStyle = () => {
