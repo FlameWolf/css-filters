@@ -50,10 +50,8 @@ function App() {
 	createEffect(() => {
 		document.body.parentElement.setAttribute("data-bs-theme", isDark() ? "dark" : "light");
 		const computedFilter = filterStyle();
-		filterBadge.innerHTML = computedFilter;
-		if(applyFilter()) {
-			targetImage.style = computedFilter;
-		}
+		filterBadge.innerHTML = showFilterBadge() ? computedFilter : "";
+		targetImage.style = applyFilter() ? computedFilter : "";
 		localStorage.setItem("theme", theme());
 	});
 
@@ -159,7 +157,7 @@ function App() {
 			<div class="row">
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
 					<div class="position-relative">
-						<img ref={targetImage} class="w-100" src={imageUrl()} style={applyFilter() ? filterStyle() : ""}/>
+						<img ref={targetImage} class="w-100" src={imageUrl()}/>
 						<div class="position-absolute top-0 start-0 w-100">
 							<div class="d-flex align-items-center my-2 px-2">
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
@@ -196,11 +194,9 @@ function App() {
 									</div>
 								</Show>
 							</div>
-							<Show when={showFilterBadge()}>
-								<div class="d-flex justify-content-end px-2">
-									<span ref={filterBadge} class="badge bg-dark filter-badge">{filterStyle()}</span>
-								</div>
-							</Show>
+							<div class="d-flex justify-content-end px-2" classList={{ "d-none": !showFilterBadge() }}>
+								<span ref={filterBadge} class="badge bg-dark filter-badge"></span>
+							</div>
 						</div>
 					</div>
 				</div>
