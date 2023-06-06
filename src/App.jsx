@@ -36,7 +36,7 @@ function App() {
 
 	const filterStyle = () => {
 		const filter = filterString();
-		return filter ? `filter: ${filter};` : "";
+		return filter ? `filter: ${filter.replace(filterStore.dropShadowColourRef, getComputedStyle(document.documentElement).getPropertyValue(filterStore.dropShadowColourVar))};` : "";
 	};
 
 	createEffect(previousFilter => {
@@ -49,7 +49,11 @@ function App() {
 
 	createEffect(() => {
 		document.body.parentElement.setAttribute("data-bs-theme", isDark() ? "dark" : "light");
-		filterBadge.innerHTML = filterStyle().replace(filterStore.dropShadowColourRef, getComputedStyle(document.documentElement).getPropertyValue(filterStore.dropShadowColourVar));
+		const computedFilter = filterStyle();
+		filterBadge.innerHTML = computedFilter;
+		if(applyFilter()) {
+			targetImage.style = computedFilter;
+		}
 		localStorage.setItem("theme", theme());
 	});
 
