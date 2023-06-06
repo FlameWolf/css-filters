@@ -7,7 +7,7 @@ import RangeSlider from "./components/RangeSlider";
 function App() {
 	const chooseImageText = `<i class="bi bi-upload"></i>`;
 	const sceneryFileName = "scenery";
-	const [theme, setTheme] = createSignal(localStorage.getItem("theme"));
+	const [theme, setTheme] = createSignal(localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"));
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
