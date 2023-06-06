@@ -1,5 +1,7 @@
 export const ellipsis = String.fromCharCode(0x2026);
 
+export const disposeUrl = url => URL.revokeObjectURL(url);
+
 export const trimFileName = function (fileName) {
 	if (fileName.length <= 12) {
 		return fileName;

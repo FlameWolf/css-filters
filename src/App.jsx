@@ -1,5 +1,5 @@
 import { createMemo, createSignal, onCleanup, For, Show, createEffect } from "solid-js";
-import { trimFileName } from "./library";
+import { disposeUrl, trimFileName } from "./library";
 import { filterStore } from "./store/filter-store";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
@@ -15,11 +15,45 @@ function App() {
 	const [applyFilter, setApplyFilter] = createSignal(true);
 	let imagePicker;
 	let targetImage;
+	let filterBadge;
 	let copyBadge;
 
-	const disposeUrl = url => {
-		URL.revokeObjectURL(url);
+	const isDark = createMemo(() => theme() === "dark");
+
+	const filterString = createMemo(() => {
+		return filterStore.filters
+			.filter(filter => filter.enable)
+			.reduce((result, filter) => {
+				const filterName = filter.name;
+				const defaultValue = filterStore.filterDefaultValue(filterName);
+				const currentValue = filterStore.filterCurrentValue(filterName);
+				const unit = filter.unit;
+				const transform = filter.transform;
+				return defaultValue === currentValue ? result : `${result}${filterName}(${transform?.(currentValue, unit) || `${currentValue}${unit}`}) `;
+			}, "")
+			.trim();
+	});
+
+	const filterStyle = () => {
+		const filter = filterString();
+		return filter ? `filter: ${filter};` : "";
 	};
+
+	createEffect(previousFilter => {
+		const currentFilter = filterString();
+		if(currentFilter !== previousFilter) {
+			setApplyFilter(true);
+		}
+		return currentFilter;
+	});
+
+	createEffect(() => {
+		document.body.parentElement.setAttribute("data-bs-theme", isDark() ? "dark" : "light");
+		filterBadge.innerHTML = filterStyle().replace(filterStore.dropShadowColourRef, getComputedStyle(document.documentElement).getPropertyValue(filterStore.dropShadowColourVar));
+		localStorage.setItem("theme", theme());
+	});
+
+	const updateTheme = () => setTheme(document.forms["theme-toggle"].elements["theme"].value);
 
 	const updateImage = () => {
 		let files = imagePicker.files;
@@ -82,7 +116,7 @@ function App() {
 			outputCanvas = null;
 			outputImage = null;
 		});
-		outputImage.addEventListener("error", event => {
+		outputImage.addEventListener("error", () => {
 			outputImage = null;
 		});
 	};
@@ -96,42 +130,6 @@ function App() {
 		}, 1500);
 	};
 
-	const updateTheme = () => setTheme(document.forms["theme-toggle"].elements["theme"].value);
-
-	const isDark = createMemo(() => theme() === "dark");
-
-	const filterString = createMemo(() => {
-		return filterStore.filters
-			.filter(filter => filter.enable)
-			.reduce((result, filter) => {
-				const filterName = filter.name;
-				const defaultValue = filterStore.filterDefaultValue(filterName);
-				const currentValue = filterStore.filterCurrentValue(filterName);
-				const unit = filter.unit;
-				const transform = filter.transform;
-				return defaultValue === currentValue ? result : `${result}${filterName}(${transform?.(currentValue, unit) || `${currentValue}${unit}`}) `;
-			}, "")
-			.trim();
-	});
-
-	createEffect(previousFilter => {
-		const currentFilter = filterString();
-		if(currentFilter !== previousFilter) {
-			setApplyFilter(true);
-		}
-		return currentFilter;
-	});
-
-	createEffect(() => {
-		document.body.parentElement.setAttribute("data-bs-theme", isDark() ? "dark" : "light");
-		localStorage.setItem("theme", theme());
-	});
-
-	const filterStyle = () => {
-		const filter = filterString();
-		return filter ? `filter: ${filter};` : "";
-	};
-
 	onCleanup(() => {
 		disposeUrl(imageUrl());
 		copyBadge = null;
@@ -141,8 +139,8 @@ function App() {
 
 	return (
 		<>
-			<div class="row">
-				<h4 class="d-inline-block mb-4 fw-bold w-auto">CSS Filter Playground</h4>
+			<div class="row mb-4">
+				<h4 class="d-inline-block fw-bold m-0 w-auto">CSS Filter Playground</h4>
 				<form class="d-inline-block btn-group btn-group-sm w-auto ms-auto" name="theme-toggle" onInput={updateTheme}>
 					<input id="theme-light" type="radio" class="btn-check" name="theme" value="light" checked={!isDark()}/>
 					<label class="btn btn-outline-secondary" for="theme-light" title="Light theme">
@@ -196,7 +194,7 @@ function App() {
 							</div>
 							<Show when={showFilterBadge()}>
 								<div class="d-flex justify-content-end px-2">
-									<span class="badge bg-dark filter-badge">{filterStyle()}</span>
+									<span ref={filterBadge} class="badge bg-dark filter-badge">{filterStyle()}</span>
 								</div>
 							</Show>
 						</div>
