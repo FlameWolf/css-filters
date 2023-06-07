@@ -1,13 +1,13 @@
 import { createMemo, createSignal, onCleanup, For, Show, createEffect } from "solid-js";
 import { disposeUrl, trimFileName } from "./library";
-import { filterStore } from "./store/filter-store";
+import { filterStore, setFilterStore } from "./store/filter-store";
 import sceneryImageUrl from "./assets/images/scenery.jpg";
 import RangeSlider from "./components/RangeSlider";
 
 function App() {
 	const chooseImageText = `<i class="bi bi-upload"></i>`;
 	const sceneryFileName = "scenery";
-	const [theme, setTheme] = createSignal(localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"));
+	const [theme, setTheme] = createSignal(localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
 	const [displayImageText, setDisplayImageText] = createSignal(chooseImageText);
 	const [fileName, setFileName] = createSignal(sceneryFileName);
 	const [imageUrl, setImageUrl] = createSignal(sceneryImageUrl);
@@ -15,7 +15,6 @@ function App() {
 	const [applyFilter, setApplyFilter] = createSignal(true);
 	let imagePicker;
 	let targetImage;
-	let filterBadge;
 	let copyBadge;
 
 	const isDark = createMemo(() => theme() === "dark");
@@ -36,22 +35,22 @@ function App() {
 
 	const filterStyle = () => {
 		const filter = filterString();
-		return filter ? `filter: ${filter.replace(filterStore.dropShadowColourRef, getComputedStyle(document.documentElement).getPropertyValue(filterStore.dropShadowColourVar))};` : "";
+		return filter ? `filter: ${filter};` : "";
 	};
+
+	const removeShadowColour = value => value.replace(filterStore.shadowColour, "");
 
 	createEffect(previousFilter => {
 		const currentFilter = filterString();
-		if(currentFilter !== previousFilter) {
+		if(removeShadowColour(currentFilter) !== previousFilter) {
 			setApplyFilter(true);
 		}
-		return currentFilter;
+		return removeShadowColour(currentFilter);
 	});
 
 	createEffect(() => {
-		document.body.parentElement.setAttribute("data-bs-theme", isDark() ? "dark" : "light");
-		const computedFilter = filterStyle();
-		filterBadge.innerHTML = showFilterBadge() ? computedFilter : "";
-		targetImage.style = applyFilter() ? computedFilter : "";
+		document.body.parentElement.setAttribute("data-bs-theme", theme());
+		setFilterStore("shadowColour", isDark() ? "#FFF" : "#000");
 		localStorage.setItem("theme", theme());
 	});
 
@@ -157,7 +156,7 @@ function App() {
 			<div class="row">
 				<div class="col-xxl-10 col-lg-9 col-md-12 mb-3 mb-lg-0">
 					<div class="position-relative">
-						<img ref={targetImage} class="w-100" src={imageUrl()}/>
+						<img ref={targetImage} class="w-100" src={imageUrl()} style={applyFilter() ? filterStyle() : ""}/>
 						<div class="position-absolute top-0 start-0 w-100">
 							<div class="d-flex align-items-center my-2 px-2">
 								<input ref={imagePicker} class="d-none" type="file" accept="image/*" onInput={updateImage}/>
@@ -194,9 +193,11 @@ function App() {
 									</div>
 								</Show>
 							</div>
-							<div class="d-flex justify-content-end px-2" classList={{ "d-none": !showFilterBadge() }}>
-								<span ref={filterBadge} class="badge bg-dark filter-badge"></span>
-							</div>
+							<Show when={showFilterBadge()}>
+								<div class="d-flex justify-content-end px-2">
+									<span class="badge bg-dark filter-badge">{filterStyle()}</span>
+								</div>
+							</Show>
 						</div>
 					</div>
 				</div>

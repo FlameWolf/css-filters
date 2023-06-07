@@ -1,17 +1,12 @@
 import { createStore } from "solid-js/store";
 
 export const [filterStore, setFilterStore] = createStore({
-	get dropShadowColourVar() {
-		return "--bs-emphasis-color";
-	},
-	get dropShadowColourRef() {
-		return `var(${this.dropShadowColourVar})`;
-	},
+	shadowColour: "#000",
 	filters: [
 		{ name: "brightness", min: 0, max: 200, unit: "%", enable: true },
 		{ name: "contrast", min: 0, max: 200, unit: "%", enable: true },
 		{ name: "saturate", min: 0, max: 200, unit: "%", text: "Saturation", enable: true },
-		{ name: "drop-shadow", min: 0, max: 50, default: 0, unit: "px", transform: (input, unit) => `0 0 ${input}${unit} ${filterStore.dropShadowColourRef}`, text: "Drop Shadow", enable: true },
+		{ name: "drop-shadow", min: 0, max: 50, default: 0, unit: "px", transform: (input, unit) => `0 0 ${input}${unit} ${filterStore.shadowColour}`, text: "Drop Shadow", enable: true },
 		{ name: "grayscale", min: 0, max: 100, default: 0, unit: "%", text: "Greyscale", enable: true },
 		{ name: "sepia", min: 0, max: 100, default: 0, unit: "%", enable: true },
 		{ name: "invert", min: 0, max: 100, default: 0, unit: "%", text: "Inversion", enable: true },
