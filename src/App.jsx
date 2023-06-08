@@ -93,14 +93,15 @@ function App() {
 		let outputImage = new Image();
 		outputImage.src = imageUrl();
 		outputImage.addEventListener("load", event => {
+			const shadowSize = (filterStore.filterCurrentValue("drop-shadow") * 2);
 			let outputCanvas = document.createElement("canvas");
 			let outputContext = outputCanvas.getContext("2d");
 			let downloadLink = document.createElement("a");
 			let downloadLinkStyle = downloadLink.style;
-			outputCanvas.width = outputImage.naturalWidth;
-			outputCanvas.height = outputImage.naturalHeight;
+			outputCanvas.width = (outputImage.naturalWidth + (shadowSize * 2));
+			outputCanvas.height = (outputImage.naturalHeight + (shadowSize * 2));
 			outputContext.filter = filterString();
-			outputContext.drawImage(outputImage, 0, 0);
+			outputContext.drawImage(outputImage, shadowSize, shadowSize);
 			downloadLink.href = outputCanvas.toDataURL("image/png");
 			downloadLink.download = `${fileName()}-filtered.png`;
 			downloadLinkStyle.display = "none";
