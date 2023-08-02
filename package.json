@@ -10,15 +10,15 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"vite": "^4.3.9",
+		"vite": "^4.4.8",
 		"vite-plugin-solid": "^2.7.0"
 	},
 	"dependencies": {
-		"babel-preset-solid": "^1.7.4",
-		"bootstrap": "^5.3.0",
+		"babel-preset-solid": "^1.7.7",
+		"bootstrap": "^5.3.1",
 		"bootstrap-icons": "^1.10.5",
 		"solid-app-router": "^0.4.2",
-		"solid-bootstrap": "^1.0.13",
-		"solid-js": "^1.7.5"
+		"solid-bootstrap": "^1.0.14",
+		"solid-js": "^1.7.8"
 	}
 }
